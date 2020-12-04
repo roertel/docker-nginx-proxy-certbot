@@ -1,4 +1,4 @@
-FROM nginx-alpine
+FROM nginx:stable-alpine
 LABEL maintainer="Ryan Oertel <ryan.oertel@gmail.com>"
 
 VOLUME /etc/letsencrypt
@@ -9,15 +9,18 @@ EXPOSE 443
 EXPOSE 587
 EXPOSE 993
 
-RUN apk add -Uq certbot-nginx && rm -rf /var/lib/apk/db /var/cache/apk/*
+RUN apk add --update-cache --quiet certbot-nginx && \
+   rm -rf /var/lib/apk/db /var/cache/apk/*
 
-#COPY ./scripts/ /scripts
-#RUN chmod +x /scripts/*.sh
+COPY ./startup/ /docker-entrypoint.d/
+RUN chmod -f +x /docker-entrypoint.d/*.sh
 
-# Copy in default nginx configuration (which just forwards ACME requests to
-# certbot, or redirects to HTTPS, but has no HTTPS configurations by default).
-RUN rm -f /etc/nginx/conf.d/*
-COPY nginx_conf.d/ /etc/nginx/conf.d/
+COPY ./scripts/ /usr/local/bin/
+RUN chmod -f +x /usr/local/bin/*
 
-ENTRYPOINT []
-CMD ["/bin/bash", "/scripts/entrypoint.sh"]
+# Copy in default nginx configuration, derived from the base image
+COPY ./configs/nginx.conf /etc/nginx/
+RUN mkdir -p /etc/nginx/config/{config,events,http,mail}.d
+
+#ENTRYPOINT []
+#CMD ["/bin/bash", "/scripts/entrypoint.sh"]
