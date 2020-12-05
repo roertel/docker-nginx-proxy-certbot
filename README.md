@@ -1,6 +1,4 @@
 # docker-nginx-proxy-certbot
-Private repository
-
 docker image for an [nginx](//nginx.com/) HTTP & IMAP/SMTP proxy server with TLS  certificates using the free [letsencrypt](//letsencrypt.org/) certificate authority, using the [*certbot*](//certbot.eff.org/) client.
 
 # Usage
