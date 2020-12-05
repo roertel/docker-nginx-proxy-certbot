@@ -60,10 +60,8 @@ Ex:
 docker exec nginx-proxy templatize
 ```
 
-<div class="panel panel-warning">**Warning**{: .panel-heading}
-<div class="panel-body">
-Depending on your template configuration, reprocessing the templates may overwrite the certbot changes from your web server.
-</div></div>
+Warning: Depending on your template configuration, reprocessing the templates may overwrite the certbot changes from your web server.
+{: .alert .alert-warning}
 
 ## Reload Nginx
 If you've just added files to the config, but they don't need to reprocess as templates, just reload Nginx:
