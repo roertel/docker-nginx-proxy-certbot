@@ -21,6 +21,7 @@ docker run [-it] [--name nginx-proxy] --publish 80:80 --publish 443:443 \
   --env CERTBOT_ARGS="--no-eff-email --keep-until-expiring --redirect --must-staple --noninteractive -d *.example.com --test-cert" \
   nginx-proxy-certbot  sh
 ```
+Note: Consider adding the --test-cert CERTBOT_ARGS flag during testing since Lets Encrypt has a limit on the number of certificates that can be issued in a given week. 
 
 ## Renew
 Since cron doesn't work very well inside of containers, create the following crontab entry on the docker host.
@@ -59,7 +60,6 @@ docker exec nginx-proxy templatize
 ```
 
 Warning: Depending on your template configuration, reprocessing the templates may overwrite the certbot changes from your web server.
-{: .alert .alert-warning}
 
 ## Reload Nginx
 If you've just added files to the config, but they don't need to reprocess as templates, just reload Nginx:
